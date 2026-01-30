@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3　
 # -*- coding: utf-8 -*-
 """
 オーロラ号予約監視スクリプト（環境変数版）
