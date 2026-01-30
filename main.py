@@ -67,9 +67,6 @@ def get_availability_status():
         
         # 全てのセルをチェック
         for cell in calendar_table.find_all('td'):
-            # セルのテキスト全体を取得
-            cell_text = cell.get_text(strip=True)
-            
             # リンクがあるセルのみ処理
             link = cell.find('a')
             if link and 'ynj=' in link.get('href', ''):
@@ -85,9 +82,15 @@ def get_availability_status():
                 # 記号を抽出（○、△、×など）
                 if '○' in text:
                     availability[day_key] = '○'
+                    print(f"✓ {day_key}: ○ を検出")
                 elif '△' in text:
                     availability[day_key] = '△'
+                    print(f"✓ {day_key}: △ を検出")
                 # リンクはあるが記号がない場合も満席扱い
+        
+        # デバッグ：検出した空き状況を表示
+        available = [k for k, v in availability.items() if v in ['○', '△']]
+        print(f"空きのある日: {len(available)}日")
         
         return availability
         
