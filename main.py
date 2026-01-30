@@ -1,4 +1,4 @@
-#!/usr/bin/env python3　
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 オーロラ号予約監視スクリプト（環境変数版）
@@ -61,11 +61,11 @@ def get_availability_status():
         # 全テーブルを取得
         tables = soup.find_all('table')
         if len(tables) < 3:
-    print("✗ カレンダーテーブルが見つかりません")
-    return None
-
-# 3番目のテーブルがカレンダー
-calendar_table = tables[2]  # 0始まりなので[2]が3番目
+            print("✗ カレンダーテーブルが見つかりません")
+            return None
+        
+        # 3番目のテーブルがカレンダー
+        calendar_table = tables[2]  # 0始まりなので[2]が3番目
         
         availability = {}
         
