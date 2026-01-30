@@ -185,37 +185,28 @@ def main():
         return
     
     print(f"監視URL: {TARGET_URL}")
-    print(f"チェック間隔: {CHECK_INTERVAL}秒（{CHECK_INTERVAL // 60}分）")
     print(f"開始時刻: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print("\nCtrl+C で停止できます\n")
+    print()
     
-    try:
-        while True:
-            print(f"\n[{datetime.now().strftime('%H:%M:%S')}] チェック中...")
-            
-            # 現在の状況を取得
-            current_status = get_availability_status()
-            
-            if current_status:
-                # 前回の状態を読み込み
-                previous_status = load_previous_state()
-                
-                # 比較して通知
-                compare_and_notify(current_status, previous_status)
-                
-                # 現在の状態を保存
-                save_current_state(current_status)
-            else:
-                print("✗ 状態取得に失敗しました")
-            
-            # 次のチェックまで待機
-            print(f"次のチェック: {CHECK_INTERVAL}秒後...")
-            time.sleep(CHECK_INTERVAL)
-            
-    except KeyboardInterrupt:
-        print("\n\n監視を停止しました")
-    except Exception as e:
-        print(f"\n✗ 予期しないエラー: {e}")
+    # GitHub Actions用：1回だけ実行
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] チェック中...")
+    
+    # 現在の状況を取得
+    current_status = get_availability_status()
+    
+    if current_status:
+        # 前回の状態を読み込み
+        previous_status = load_previous_state()
+        
+        # 比較して通知
+        compare_and_notify(current_status, previous_status)
+        
+        # 現在の状態を保存
+        save_current_state(current_status)
+    else:
+        print("✗ 状態取得に失敗しました")
+    
+    print("\n監視完了")
 
 
 if __name__ == "__main__":
