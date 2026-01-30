@@ -59,8 +59,8 @@ def get_availability_status():
         soup = BeautifulSoup(response.text, 'html.parser')
         
         # 全テーブルを取得
-tables = soup.find_all('table')
-if len(tables) < 3:
+        tables = soup.find_all('table')
+        if len(tables) < 3:
     print("✗ カレンダーテーブルが見つかりません")
     return None
 
