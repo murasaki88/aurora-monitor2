@@ -42,7 +42,12 @@ def get_availability_status():
     """予約ページから空き状況を取得"""
     try:
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'ja,en-US;q=0.9,en;q=0.8',
+            'Accept-Encoding': 'gzip, deflate',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1'
         }
         response = requests.get(TARGET_URL, headers=headers, timeout=30)
         response.encoding = 'utf-8'
@@ -76,17 +81,17 @@ def get_availability_status():
                 day = date_str.split('-')[-1]
                 day_key = f"2月{day}日"
                 
-                # リンクテキストから空き状況を抽出
-                text = link.get_text(strip=True)
-                
-                # 記号を抽出（○、△、×など）
-                if '○' in text:
-                    availability[day_key] = '○'
-                    print(f"✓ {day_key}: ○ を検出")
-                elif '△' in text:
-                    availability[day_key] = '△'
-                    print(f"✓ {day_key}: △ を検出")
-                # リンクはあるが記号がない場合も満席扱い
+                # emタグの中身を取得（○や△が入ってる）
+                em_tag = link.find('em')
+                if em_tag:
+                    status_text = em_tag.get_text(strip=True)
+                    
+                    if '○' in status_text:
+                        availability[day_key] = '○'
+                        print(f"✓ {day_key}: ○ を検出")
+                    elif '△' in status_text:
+                        availability[day_key] = '△'
+                        print(f"✓ {day_key}: △ を検出")
         
         # デバッグ：検出した空き状況を表示
         available = [k for k, v in availability.items() if v in ['○', '△']]
@@ -96,6 +101,8 @@ def get_availability_status():
         
     except Exception as e:
         print(f"✗ データ取得エラー: {e}")
+        import traceback
+        traceback.print_exc()
         return None
 
 
