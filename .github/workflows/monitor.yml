@@ -2,7 +2,7 @@ name: Aurora Monitor
 
 on:
   schedule:
-    - cron: '*/15 * * * *'  # 15分おき
+    - cron: '*/3 * * * *'  # 3分おき
   workflow_dispatch:  # 手動実行も可能
 
 jobs:
